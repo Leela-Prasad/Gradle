@@ -1,0 +1,48 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+
+// This compileJava task is coming from plugin 'java'
+//defaultTasks 'compileJava'
+
+//defaultTasks 'clean', 'test'
+
+//war task is coming from war plugin
+//defaultTasks 'clean', 'war'
+
+defaultTasks 'eclipse', 'clean', 'deployToTomcat'
+
+//Changing the artifact Name
+war {
+	//archiveName = 'gradleWebapp'
+	//or
+	archiveName 'gradleWebapp.war'
+	webInf {from 'src/main/resources/application.xml'}
+}
+
+//Here we are writing a new task to copy
+//artifact to tomcat webapps directory 
+//and this task is extended prebuilt Copy task
+//and we can override copy task properties. 
+task deployToTomcat (type:Copy, dependsOn: 'war') {
+	from 'build/libs/gradleWebapp.war'
+	into '../tomcat/webapps'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile group: 'org.springframework', name: 'spring-webmvc', version: '3.1.1.RELEASE'
+	compile 'junit:junit:3.8.1'
+	compile 'javax.validation:validation-api:1.0.0.GA'
+	compile 'org.hibernate:hibernate-validator:4.3.1.Final'
+	compile 'javax.servlet:servlet-api:2.5'
+	compile 'com.lowagie:itext:2.1.7'
+	compile 'org.apache.poi:poi:3.9'
+	
+	runtime 'org.springframework.webflow:spring-webflow:2.3.2.RELEASE'
+	runtime 'jstl:jstl:1.2'
+	
+}
