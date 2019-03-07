@@ -1,1 +1,161 @@
-# Gradle
+If a dependency pulls out other dependencies then those dependencies are called transitive dependencies.
+
+Default Scope of dependency is compile.
+compile scope will be available during compilation and runtime.
+test scope will be available during test phase.
+provided scope will be available only at compile time but not at runtime because at runtime web servers will have these jars.
+
+** provided scope dependencies will not be part of transitive dependencies.
+
+We can turn off a dependency that will go as a transitive dependency using below tag
+<optional>true</optional>
+
+Now some one depends on our project then they will not get dependencies which are marked with optional.
+
+we can mention versions with range
+[3.0.3, 4.0.0)
+3.X.X Versions
+this means version start from 3.0.3(INCLUDING) to 4.0.0(EXCLUDING).
+
+[3.0.3, ) 
+any version starting from 3.0.3
+
+<version>LATEST</version>
+This will download latest version including snapshots, so it not recommended to use this option.
+
+<version>RELEASE</version>
+This will download latest release version.
+
+
+
+** If you want to override the configuration of any plugin defined in super pom
+then you have to use same id name defined in super pom.
+
+
+
+Gradle:
+In Gradle task is same as target in ant.
+
+
+task hello << {
+	println "Hello!"
+}
+
+we can run above script like 
+gradle hello
+
+
+or we can mention the default tasks to execute
+
+defaultTasks 'hello'
+task hello << {
+	println "Hello!"
+}
+
+
+Running Multiple Tasks:
+defaultTasks 'hello', 'helloAgain'
+
+task hello << {
+	println "Hello!"
+}
+
+task helloAgain << {
+	println "Hello Again!"
+}
+
+
+Running Dependent Tasks:
+defaultTasks 'helloAgain'
+
+task hello << {
+	println "Hello!"
+}
+
+task helloAgain(dependsOn : 'hello') << {
+	println "Hello Again!"
+}
+
+** Dependents tasks will only be executed once like ant.
+
+
+Grade is written in Groovy as Groovy runs on virtual machine it is compatible with Java also
+Groovy > Java
+
+// We can write import statements also
+import java.util.List;
+defaultTasks 'finished'
+task startProcess << {
+	println "process starting"
+}
+
+task step2 << {
+	println "step2"
+}
+
+task doSomeThingInTheMiddle(dependsOn: ['startProcess', 'step2']) << {
+	//In Groovy semicolons are optional
+	println 'In the Middle step';
+}
+
+task finished(dependsOn: ['doSomeThingInTheMiddle', 'step2']) << {
+	println("done")
+	
+	//In Groovy we can very well write java code
+	for(int i=0;i<5;++i) {
+		System.out.println("index :" + i);
+	}
+	
+}
+
+
+Groovy Basics:
+
+import java.util.Date;
+
+defaultTasks 'groovyLoop'
+
+task greet << {
+	println "Welcome to Gradle Basics Course"
+}
+
+task someTask << {
+	println "Some Task"
+}
+task groovyLoop(dependsOn: 'someTask')<< {
+
+	4.times {
+		println it
+	}
+	
+	// Java Loop
+	for(int i=0;i<4;++i) {
+		Date date = new Date();
+		println date;
+	}
+	
+}
+
+
+// This will be used to customise tasks that are prebuilt
+groovyLoop.doFirst {
+	println "Running Groovy Loop Task"
+}
+
+groovyLoop.doLast {
+	println "Groovy Loop Task Ends"
+}
+
+// Conditional Execution
+// This can be used to run something like
+// Integration Tests in the night
+if(Math.random() < 0.5) {
+	groovyLoop.dependsOn 'greet'
+}
+
+
+
+
+
+
+** A Plugin in Gradle is collection of Prebuilt tasks
