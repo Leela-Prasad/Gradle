@@ -1,0 +1,9 @@
+defaultTasks 'helloAgain'
+
+task hello << {
+	println "Hello!"
+}
+
+task helloAgain(dependsOn : 'hello') << {
+	println "Hello Again!"
+}

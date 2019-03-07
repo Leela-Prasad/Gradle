@@ -1,0 +1,9 @@
+Maven-Project/.gradle
+Maven-Project/.classpath
+Maven-Project/.project
+Maven-Project/.idea
+Maven-Project/.settings
+Maven-Project/bin
+Maven-Project/build
+Maven-Project/target
+.DS_Store

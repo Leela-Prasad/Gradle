@@ -1,0 +1,40 @@
+import java.util.Date;
+
+defaultTasks 'groovyLoop'
+
+task greet << {
+	println "Welcome to Gradle Basics Course"
+}
+
+task someTask << {
+	println "Some Task"
+}
+task groovyLoop(dependsOn: 'someTask')<< {
+
+	4.times {
+		println it
+	}
+	
+	// Java Loop
+	for(int i=0;i<4;++i) {
+		Date date = new Date();
+		println date;
+	}
+	
+}
+
+// This will be used to customise tasks that are prebuilt
+groovyLoop.doFirst {
+	println "Running Groovy Loop Task"
+}
+
+groovyLoop.doLast {
+	println "Groovy Loop Task Ends"
+}
+
+// Conditional Execution
+// This can be used to run something like
+// Integration Tests in the night
+if(Math.random() < 0.5) {
+	groovyLoop.dependsOn 'greet'
+}

@@ -1,0 +1,9 @@
+defaultTasks 'hello', 'helloAgain'
+
+task hello << {
+	println "Hello!"
+}
+
+task helloAgain << {
+	println "Hello Again!"
+}

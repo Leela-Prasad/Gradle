@@ -1,0 +1,25 @@
+// We can write import statements also
+import java.util.List;
+defaultTasks 'finished'
+task startProcess << {
+	println "process starting"
+}
+
+task step2 << {
+	println "step2"
+}
+
+task doSomeThingInTheMiddle(dependsOn: ['startProcess', 'step2']) << {
+	//In Groovy semicolons are optional
+	println 'In the Middle step';
+}
+
+task finished(dependsOn: ['doSomeThingInTheMiddle', 'step2']) << {
+	println("done")
+	
+	//In Groovy we can very well write java code
+	for(int i=0;i<5;++i) {
+		System.out.println("index :" + i);
+	}
+	
+}
